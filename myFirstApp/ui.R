@@ -1,18 +1,15 @@
 library(shiny)
 
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
-        titlePanel("Data Science FTW!"),
+        titlePanel("Slider App"),
         sidebarLayout(
                 sidebarPanel(
-                        h1("H1 text"),
-                        h2("H2 text"),
-                        h3("Sidebar Text"),
-                        em("emphasized text")
+                        h3("Move the slider!"),
+                        sliderInput("slider1", "slide me!", 0, 100, 0)
                 ),
                 mainPanel(
-                        h3("Main Panel Text"),
-                        code("some code")
+                        h3("Slider value:"),
+                        textOutput("text1")
                 )
         )
 ))
