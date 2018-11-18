@@ -9,7 +9,8 @@ shinyUI(fluidPage(
                         checkboxInput("showmodel1", "Show/hide Model 1", 
                                       value = TRUE),
                         checkboxInput("showmodel2", "Show/hide Model 2",
-                                      value = TRUE)
+                                      value = TRUE),
+                        submitButton("Submit")
                 ),
                 mainPanel(
                         plotOutput("plot1"),
