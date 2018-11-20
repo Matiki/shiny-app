@@ -18,50 +18,50 @@ shinyServer(function(input, output){
                 subset(USAccDeaths,
                        start = length(USAccDeaths) - fcperiod())
         })
-        output$plot1 <- renderPlot({
-                if(input$modelinput == 'naive'){
-                        training() %>% naive(h = fcperiod()) %>%
-                        autoplot() + autolayer(test())
-                }else if(input$modelinput == 'snaive'){
-                        training() %>% snaive(h = fcperiod()) %>%
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'arima'){
-                        training() %>% auto.arima() %>% 
-                                forecast(h = fcperiod()) %>% 
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'ets'){
-                        training() %>% ets() %>% 
-                                forecast(h = fcperiod()) %>% 
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'hreg'){
-                        training() %>% auto.arima(xreg = fourier(training(), 
-                                                                 K = 6),
-                                                  seasonal = FALSE,
-                                                  lambda = 0) %>%
-                                forecast(xreg = fourier(training(), 
-                                                        K = 6, 
-                                                        h = fcperiod())) %>%
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'tbats'){
-                        training() %>% tbats() %>% 
-                                forecast(h = fcperiod()) %>% 
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'holt'){
-                        training() %>% holt(h = fcperiod()) %>%
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'damp'){
-                        training() %>% holt(h = fcperiod(), damped = TRUE) %>%
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'add'){
-                        training() %>% hw(h = fcperiod(), seasonal = "additive") %>%
-                                autoplot() + autolayer(test())
-                }else if(input$modelinput == 'mult'){
-                        training() %>% hw(h = fcperiod(), seasonal = "multiplicative") %>%
-                                autoplot() + autolayer(test())
-                }
-
+        
+        trans <- reactive({
+                input$fourierslider
         })
-        output$slide <- renderText({
-                input$periodslider
+        
+        model <- reactive({
+                if(input$modelinput == 'naive'){
+                        fit <- training() %>% naive(h = fcperiod())
+                }else if(input$modelinput == 'snaive'){
+                        fit <- training() %>% snaive(h = fcperiod()) 
+                }else if(input$modelinput == 'arima'){
+                        fit <- training() %>% auto.arima() %>% 
+                                forecast(h = fcperiod())
+                }else if(input$modelinput == 'ets'){
+                        fit <- training() %>% ets() %>% 
+                                forecast(h = fcperiod())
+                }else if(input$modelinput == 'hreg'){
+                        fit <- training() %>% auto.arima(xreg = fourier(training(),
+                                                                        K = trans()),
+                                                         seasonal = FALSE,
+                                                         lambda = 0) %>%
+                                forecast(xreg = fourier(training(), 
+                                                        K = trans(), 
+                                                        h = fcperiod()))
+                }else if(input$modelinput == 'tbats'){
+                        fit <- training() %>% tbats() %>% 
+                                forecast(h = fcperiod())
+                }else if(input$modelinput == 'holt'){
+                        fit <- training() %>% holt(h = fcperiod())
+                }else if(input$modelinput == 'damp'){
+                        fit <- training() %>% holt(h = fcperiod(), damped = TRUE)
+                }else if(input$modelinput == 'add'){
+                        fit <- training() %>% hw(h = fcperiod(), seasonal = "additive")
+                }else if(input$modelinput == 'mult'){
+                        fit <- training() %>% hw(h = fcperiod(), seasonal = "multiplicative")
+                }
+                fit
+        })
+        
+        output$plot1 <- renderPlot({
+                model() %>% autoplot() + autolayer(test())
+        })
+        
+        output$accuracy <- renderPrint({
+                accuracy(model(), test())
         })
 })

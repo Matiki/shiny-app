@@ -24,12 +24,15 @@ shinyUI(fluidPage(
                                                     "Exp Smoothing w/Additive Seasonality" = 'add',
                                                     "Exp Smoothing w/Multiplicative Seasonality" = 'mult'),
                                      selected = 'ets'),
+                        sliderInput('fourierslider',
+                                    "Number of fourier transformations (for harmonic regression model):",
+                                    1, 6, value = 3),
                         submitButton("Run Forecast")
                 ),
                 mainPanel(
                         tabsetPanel(type = "tabs",
                                     tabPanel("Forecast Plot", plotOutput("plot1")),
-                                    tabPanel("Forecast Accuracy", textOutput("slide"))
+                                    tabPanel("Forecast Accuracy", verbatimTextOutput("accuracy"))
                         )
                 )
         )
