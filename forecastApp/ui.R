@@ -9,7 +9,7 @@ shinyUI(fluidPage(
         sidebarLayout(
                 sidebarPanel(
                         sliderInput('periodslider',
-                                    "What is the forecast period?",
+                                    "What is the forecast period? (in months)",
                                     12, 60, value = 12),
                         radioButtons(inputId = "modelinput",
                                      label = "Choose model type: ",
@@ -32,7 +32,7 @@ shinyUI(fluidPage(
                 mainPanel(
                         tabsetPanel(type = "tabs",
                                     tabPanel("Forecast Plot", plotOutput("plot1")),
-                                    tabPanel("Forecast Accuracy", verbatimTextOutput("accuracy"))
+                                    tabPanel("Forecast Accuracy", tableOutput("accuracy"))
                         )
                 )
         )

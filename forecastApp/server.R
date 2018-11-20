@@ -61,7 +61,7 @@ shinyServer(function(input, output){
                 model() %>% autoplot() + autolayer(test())
         })
         
-        output$accuracy <- renderPrint({
+        output$accuracy <- renderTable({
                 accuracy(model(), test())
         })
 })
