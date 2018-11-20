@@ -5,7 +5,7 @@ library(ggplot2)
 
 # Define UI for application that selects type of forecast model
 shinyUI(fluidPage(
-        titlePanel("Title"),
+        titlePanel("Time Series Forecasting of Accidental Deaths in the US 1973-1978"),
         sidebarLayout(
                 sidebarPanel(
                         sliderInput('periodslider',
