@@ -58,7 +58,9 @@ shinyServer(function(input, output){
         })
         
         output$plot1 <- renderPlot({
-                model() %>% autoplot() + autolayer(test())
+                model() %>% autoplot() + autolayer(test()) +
+                        labs(x = "Year", 
+                             y = "Accidental Deaths")
         })
         
         output$accuracy <- renderTable({
