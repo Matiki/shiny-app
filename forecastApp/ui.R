@@ -25,7 +25,7 @@ shinyUI(fluidPage(
                                                     "Exp Smoothing w/Multiplicative Seasonality" = 'mult'),
                                      selected = 'ets'),
                         sliderInput('fourierslider',
-                                    "Number of fourier transformations (for harmonic regression model):",
+                                    "Number of fourier terms (for harmonic regression model):",
                                     1, 6, value = 3),
                         submitButton("Run Forecast")
                 ),
