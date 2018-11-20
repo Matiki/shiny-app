@@ -4,22 +4,19 @@ library(dplyr)
 library(ggplot2)
 
 data("USAccDeaths")
-#training <- window(USAccDeaths, end = 1977)
-#test <- window(USAccDeaths, start = 1977)
 
 # Define server logic required to forecast time series
 shinyServer(function(input, output){
         fcperiod <- reactive({
-                p <- input$periodslider
-                p
+                input$periodslider
         })
         training <- reactive({
                 subset(USAccDeaths, 
-                       end = length(USAccDeaths) - fcperiod() + 1)
+                       end = length(USAccDeaths) - fcperiod())
         })
         test <- reactive({
                 subset(USAccDeaths,
-                       start = length(USAccDeaths) - fcperiod() + 1)
+                       start = length(USAccDeaths) - fcperiod())
         })
         output$plot1 <- renderPlot({
                 if(input$modelinput == 'naive'){
@@ -37,9 +34,10 @@ shinyServer(function(input, output){
                                 forecast(h = fcperiod()) %>% 
                                 autoplot() + autolayer(test())
                 }else if(input$modelinput == 'hreg'){
-                        training() %>% auto.arima(xreg = fourier(training(), K = 6), 
-                                                seasonal = FALSE, 
-                                                lambda = 0) %>%
+                        training() %>% auto.arima(xreg = fourier(training(), 
+                                                                 K = 6),
+                                                  seasonal = FALSE,
+                                                  lambda = 0) %>%
                                 forecast(xreg = fourier(training(), 
                                                         K = 6, 
                                                         h = fcperiod())) %>%
