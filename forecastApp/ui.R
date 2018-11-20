@@ -32,7 +32,17 @@ shinyUI(fluidPage(
                 mainPanel(
                         tabsetPanel(type = "tabs",
                                     tabPanel("Forecast Plot", plotOutput("plot1")),
-                                    tabPanel("Forecast Accuracy", tableOutput("accuracy"))
+                                    tabPanel("Forecast Accuracy", tableOutput("accuracy")),
+                                    tabPanel("Instructions", 
+                                             "Select the type of forecast model on the left.",
+                                             br(), 
+                                             "Use the slider to change the length of the forecast period.",
+                                             br(),
+                                             "If using a harmonic regression model, you can select how many fourier terms to include.",
+                                             br(),
+                                             "Press the 'Run Forecast' button to generate a new plot.",
+                                             br(),
+                                             "Click the 'Accuracy' tab to check the RMSE of each model.")
                         )
                 )
         )
