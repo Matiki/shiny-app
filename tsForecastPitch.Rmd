@@ -1,0 +1,59 @@
+---
+title: "Time Series Forecasting Shiny App"
+author: "Matiki"
+date: "November 19, 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(forecast)
+library(dplyr)
+```
+
+## Time Series of US Accidental Deaths 1973-1978
+
+This Shiny app uses the sample data set 'USAccDeaths' which is a monthly time 
+series of the total accidental deaths in the US from 1973 to 1978. We will be 
+using this time series to do some forecasting using various types of forecasting
+models. Using the 'forecast' package, developed by Rob Hyndman, we will create 
+the models as well as plot the forecast periods along with 80% and 95% confidence
+intervals.
+
+In order to compare the accuracy of the different models, we will need to first
+split the time series into training and test sets. This will allow us to compare
+the accuracy of each model by looking at the root mean squared error (RMSE).
+
+## Types of Forecast Models
+
+Here are the types of models that we will implement in our Shiny app:
+
+- Naive model
+- Seasonal naive model
+- ARIMA model
+- ETS Model
+- Harmonic regression model
+- TBATS model
+- Exponential smoothing 
+- Exponential smoothing with damped trend
+- Exponential smoothing with additive seasonality
+- Exponential smoothing with multiplicative seasonality
+
+## Exmple what the app will display:
+```{r}
+training <- window(USAccDeaths, end = 1977)
+test <- window(USAccDeaths, start = 1977)
+training %>% auto.arima() %>% forecast() %>% autoplot() + autolayer(test)
+```
+
+## Input from User
+
+The user will be able to select which type of forecast to implement, how many 
+months make up the forecast period, and the number of fourier terms to 
+include in a harmonic regression model, if they should choose to use this model
+in their forecast.
+
+There will also be a second tab on the app displaying the accuracy like this:
+```{r}
+training %>% auto.arima() %>% forecast() %>% accuracy(test)
+```
